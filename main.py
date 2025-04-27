@@ -1,5 +1,5 @@
 from sudoku import Sudoku
-from hillClimbing import hill_climbing_solver
+from hillClimbing import HillClimbingSolver
 from astar import astar_solver
 
 def main():
@@ -12,7 +12,8 @@ def main():
     sudoku.display()
 
     if algo == "hill":
-        solution, iterations, conflicts = hill_climbing_solver(sudoku)
+        solver = HillClimbingSolver(sudoku)
+        solution, iterations, conflicts = solver.solve()
         print(f"\nRésolu en {iterations} itérations, {conflicts} conflits restants.")
     elif algo == "astar":
         solution, iterations = astar_solver(sudoku)

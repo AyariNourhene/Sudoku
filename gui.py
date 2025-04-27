@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 from sudoku import Sudoku
-from hillClimbing import hill_climbing_solver
+from hillClimbing import HillClimbingSolver
 from astar import astar_solver
 
 class SudokuGUI:
@@ -55,22 +55,18 @@ class SudokuGUI:
         
         # Initialiser la grille vide
         self.init_grid()
-        
+    
     def init_grid(self):
-        # Créer les cellules de la grille
         self.cells = []
         for i in range(9):
             row = []
             for j in range(9):
                 cell = ttk.Entry(self.grid_frame, width=3, font=('Arial', 16), justify='center')
                 cell.grid(row=i, column=j, padx=1, pady=1, ipady=5)
-                
-                # Ajouter des bordures pour les blocs 3x3
                 if i % 3 == 0 and i != 0:
                     cell.grid(pady=(3,1))
                 if j % 3 == 0 and j != 0:
                     cell.grid(padx=(3,1))
-                
                 row.append(cell)
             self.cells.append(row)
     
@@ -89,8 +85,6 @@ class SudokuGUI:
                 value = grid[i][j] if grid[i][j] != 0 else ""
                 self.cells[i][j].delete(0, tk.END)
                 self.cells[i][j].insert(0, str(value))
-                
-                # Mettre en évidence les cellules fixes (non vides initialement)
                 if grid[i][j] != 0:
                     self.cells[i][j].config(state='readonly', foreground='blue')
                 else:
@@ -104,7 +98,8 @@ class SudokuGUI:
         algo = self.algorithm.get()
         
         if algo == "hill":
-            solution, iterations, conflicts = hill_climbing_solver(self.sudoku)
+            solver = HillClimbingSolver(self.sudoku)
+            solution, iterations, conflicts = solver.solve()
             self.solution = solution
             self.iterations_label.config(text=str(iterations))
             self.conflicts_label.config(text=str(conflicts))
@@ -112,7 +107,7 @@ class SudokuGUI:
             solution, iterations = astar_solver(self.sudoku)
             self.solution = solution
             self.iterations_label.config(text=str(iterations))
-            self.conflicts_label.config(text="0")  # A* trouve toujours une solution sans conflits
+            self.conflicts_label.config(text="0")
             
         if solution:
             self.display_grid(solution)
@@ -120,11 +115,13 @@ class SudokuGUI:
             messagebox.showinfo("Information", "La résolution a échoué")
     
     def reset(self):
+        """Réinitialise la grille à son état initial"""
         if self.sudoku:
             self.display_grid(self.sudoku.grid)
             self.clear_results()
     
     def clear_results(self):
+        """Réinitialise les labels de résultats"""
         self.iterations_label.config(text="0")
         self.conflicts_label.config(text="0")
 
@@ -132,4 +129,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = SudokuGUI(root)
     root.mainloop()
-
