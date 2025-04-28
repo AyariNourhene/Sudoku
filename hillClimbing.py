@@ -61,6 +61,7 @@ class HillClimbingSolver:
 
     def solve(self, max_iterations=10000, max_restarts=5):
         """Algorithme principal avec redémarrages"""
+        total_iterations = 0
         for restart in range(max_restarts):
             current_grid = self.initialize_grid()
             current_heuristic = self.heuristic(current_grid)
@@ -68,6 +69,7 @@ class HillClimbingSolver:
             for iteration in range(max_iterations):
                 neighbor = self.get_neighbor(current_grid)
                 neighbor_heuristic = self.heuristic(neighbor)
+                total_iterations += 1
                 
                 if neighbor_heuristic < current_heuristic:
                     current_grid = neighbor
@@ -78,6 +80,6 @@ class HillClimbingSolver:
                         self.best_solution = copy.deepcopy(current_grid)
                         self.best_conflicts = current_conflicts
                         if current_conflicts == 0:
-                            return self.best_solution, (restart * max_iterations) + iteration, self.best_conflicts
+                            return self.best_solution, total_iterations, self.best_conflicts
         
-        return self.best_solution, max_restarts * max_iterations, self.best_conflicts
+        return self.best_solution, total_iterations, self.best_conflicts
