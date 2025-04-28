@@ -246,7 +246,10 @@ class SudokuGUI:
             self.execution_time = time.time() - start_time
             
             if self.solution:
-                self.solved = True
+                if self.conflicts == 0:
+                    self.solved = True
+                else:
+                    self.solved = False
                 # Mettre à jour la grille avec la solution
                 for i in range(9):
                     for j in range(9):
