@@ -5,7 +5,7 @@ import time
 
 def main():
     print("Bienvenue dans le solveur de Sudoku !\n")
-    difficulty = input("Choisissez la grille (easy / medium / hard) : ").strip()
+    difficulty = input("Choisissez la grille (easy / medium / hard / expert) : ").strip()
     algo = input("Choisissez l'algorithme (hill / astar) : ").strip()
 
     sudoku = Sudoku.from_file(f'grids/{difficulty}.txt')

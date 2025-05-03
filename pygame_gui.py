@@ -63,7 +63,8 @@ class SudokuGUI:
         self.difficulty_buttons = {
             "easy": pygame.Rect(50, 50, button_width, button_height),
             "medium": pygame.Rect(50 + button_width + spacing, 50, button_width, button_height),
-            "hard": pygame.Rect(50 + 2*(button_width + spacing), 50, button_width, button_height)
+            "hard": pygame.Rect(50 + 2*(button_width + spacing), 50, button_width, button_height),
+            "expert": pygame.Rect(50 + 3*(button_width + spacing), 50, button_width, button_height)
         }
 
         # Boutons d'algorithme
@@ -76,7 +77,7 @@ class SudokuGUI:
         self.solve_button = pygame.Rect(WIDTH - 150, 100, button_width, button_height)
         
         # Bouton Réinitialiser
-        self.reset_button = pygame.Rect(WIDTH - 150, 50, button_width, button_height)
+        self.reset_button = pygame.Rect(WIDTH - 270, 100, button_width, button_height)
 
     def display_grid(self):
         window.fill(WHITE)
@@ -250,7 +251,7 @@ class SudokuGUI:
                     self.solved = True
                 else:
                     self.solved = False
-                # Mettre à jour la grille avec la solution
+                # Mettre à jour la grille 
                 for i in range(9):
                     for j in range(9):
                         if self.grid[i][j] == 0:  # Ne remplacer que les cases vides
